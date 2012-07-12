@@ -62,35 +62,27 @@ class Board(object):
 #        return ("O" if n % 2 == 0 else "X") + str(n)
         return n
 
-   def has_cycle(self, turn=3):        
+    def has_cycle(self, turn=3):
         where_played = self.tok_map[turn]
         where = where_played[0]
-        
-        position_count = defaultdict(int)
-        token_count = defaultdict(int)
+        visited = []
 
         def recure_cycle(self, to_remove, where_i_came_from):
-            #where_played[1]
-
+            if where_i_came_from in visited:
+                return True
             
+            visited.append(where_i_came_from)
 
-            print 'where %s'% to_remove
-            tokens = self.pos_map[ where ].copy()
+            tokens = self.pos_map[ where_i_came_from ].copy()
             tokens.remove(to_remove)
-            token_count[to_remove] += 1
-            print 'token: '+str(tokens)
+            
             if len(tokens) == 0:
-                return false
+                return False
             else:
-                pos = set(self.tok_map[tokens.pop()])
+                new_to_remove = tokens.pop()
+                pos = set(self.tok_map[new_to_remove])
                 pos.remove(where_i_came_from)
-                position_count[where_i_came_from] += 1
-
-                print 'pos: %s' % pos
-                print position_count
-                print token_count
-
-                return recure_cycle(pos.pop, self.tok_map[pos.pop()])
+                return recure_cycle(self, new_to_remove, pos.pop())
             
         return recure_cycle(self, turn, where)
 
@@ -140,12 +132,14 @@ class Game(object):
 
 if __name__ == '__main__':
     b = Board()
-    b.move(1, 2, 3)
-    b.move(2, 4, 5)
-    b.move(3, 4, 5)
-    # b.move('x1', 2, 3)
-    # b.move('o2', 4, 5)
-    # b.move('x3', 4, 5)
+    # b.move(1, 2, 3)
+    # b.move(2, 4, 5)
+    # b.move(3, 4, 5)
+    b.move(1, 1, 2)
+    b.move(2, 2, 5)
+    b.move(3, 1, 8)
+    b.move(4, 5, 8)
+
     print "pos_map: %s" % b.pos_map
     print "tok_map: %s" % b.tok_map
     print '================='
