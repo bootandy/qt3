@@ -62,6 +62,40 @@ class Board(object):
 #        return ("O" if n % 2 == 0 else "X") + str(n)
         return n
 
+   def has_cycle(self, turn=3):        
+        where_played = self.tok_map[turn]
+        where = where_played[0]
+        
+        position_count = defaultdict(int)
+        token_count = defaultdict(int)
+
+        def recure_cycle(self, to_remove, where_i_came_from):
+            #where_played[1]
+
+            
+
+            print 'where %s'% to_remove
+            tokens = self.pos_map[ where ].copy()
+            tokens.remove(to_remove)
+            token_count[to_remove] += 1
+            print 'token: '+str(tokens)
+            if len(tokens) == 0:
+                return false
+            else:
+                pos = set(self.tok_map[tokens.pop()])
+                pos.remove(where_i_came_from)
+                position_count[where_i_came_from] += 1
+
+                print 'pos: %s' % pos
+                print position_count
+                print token_count
+
+                return recure_cycle(pos.pop, self.tok_map[pos.pop()])
+            
+        return recure_cycle(self, turn, where)
+
+
+        
 def test_display():
     b = Board()
     b.move(1, 2, 3)
@@ -102,9 +136,17 @@ class Game(object):
                 return winner
         print "it's a draw!"
 
+
+
 if __name__ == '__main__':
     b = Board()
-    print b.check_winner()
     b.move(1, 2, 3)
-    print b.__dict__
-    test_display()
+    b.move(2, 4, 5)
+    b.move(3, 4, 5)
+    # b.move('x1', 2, 3)
+    # b.move('o2', 4, 5)
+    # b.move('x3', 4, 5)
+    print "pos_map: %s" % b.pos_map
+    print "tok_map: %s" % b.tok_map
+    print '================='
+    print b.has_cycle()
